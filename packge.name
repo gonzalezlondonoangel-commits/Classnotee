@@ -1,0 +1,29 @@
+name: Crear APK de CLASSNOTE
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Compilar APK
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          workdir: .
+          buildozer_version: stable
+
+      - name: Guardar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: CLASSNOTE-APK
+          path: ${{ steps.buildozer.outputs.filename }}
